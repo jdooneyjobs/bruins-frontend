@@ -1,0 +1,119 @@
+html{
+    background-color: gray;
+    height: fit-content;
+}
+body{
+    background-color: gray;
+    height: fit-content;
+}
+th{
+    border:1px solid black;
+    width: 100px;
+}
+td{
+    border:1px solid black;
+}
+mat-card-header{
+    justify-content: center;
+    color: black;
+}
+mat-list{
+    text-align: center;
+}
+mat-option{
+    background-color: white;
+}
+mat-toolbar{
+    height: 10%;
+    background-color: black;
+    position: relative;
+}
+.text{
+    color: black;
+}
+.stat-button{
+    justify-content: center;
+    background-color: gray;
+    
+
+}
+.stat-button:hover{
+    background-color: rgb(73, 73, 73);
+}
+.player-card{
+    text-align: center;
+    width: 500px;
+    background-color: white;
+    
+}
+.card-viewer{
+    width:100%;
+    overflow-x:auto;
+    overflow-y: hidden;
+}
+.teamDropdown{
+    position: absolute;
+    right: 40px;
+    background-color: white;
+    height: 40px;
+    border-radius: 5px;
+}
+.data-view{
+    margin-top: 2%;
+    margin-left: 5%;
+    margin-right: 5%;
+    background-color: white;
+    border-radius: 25px;
+    position: relative;
+}
+.mini-card{
+    min-height: 80%;
+    display: inline-block;
+    border-radius: 10px;
+    border:1px solid black;
+    padding: 10px;
+
+}
+.stat-table{
+    border:1px solid black;
+    border-collapse: collapse;
+    display: inline-block;
+    overflow-x:auto;
+    width:70%;
+    position: absolute;
+    top: 320px;
+    right: 10%;
+
+}
+.graph-view{
+    display: inline-block; 
+    position: absolute; 
+    right: 10%; 
+    top: 0;
+    margin-left: 20px;
+}
+.stat-select{
+    position: absolute;
+    right: 10px; 
+    top: 10px;
+}
+::-webkit-scrollbar{
+    width: 10px;
+  }
+  
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px black; 
+    border-radius: 10px;
+  }
+   
+::-webkit-scrollbar-thumb {
+    background: yellow; 
+    border-radius: 10px;
+    border-color: black;
+    border-style: solid;
+    border-width: 1px;
+  }
+  
+::-webkit-scrollbar-thumb:hover {
+    background: rgb(124, 124, 1); 
+  }
