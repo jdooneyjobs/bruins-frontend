@@ -38,153 +38,173 @@
                                 <mat-list-item class="text">Weight: {{player.weight}} lbs</mat-list-item>
                             </mat-list>
                         </div>
-                        <button mat-raised-button class="stat-button" (click)="updateStats(player.id)">Show All Stats</button>
+                        <div style="width: 250px;display: inline-block;">
+                            <button mat-raised-button class="stat-button" (click)="updateStats(player.id)">Show All Stats</button>
+                        </div>
+                        <div style="width: 250px;display: inline-block;">
+                            <button mat-raised-button class="stat-button" (click)="comparePlayer(player.id)">+ Compare Player</button>
+                        </div>
+                       
                     </div>
                 </mat-card>
             </td>
             </table>
 
         </div>
-           <div class="data-view">
-            <mat-card style="background-color: white; color: black;;">
-                <div class="mini-card">
-                    <h2>Player Statistics</h2>
-                    <h3 *ngIf="number!=null else elseBlock">{{number}} {{name}}</h3>
-                    <ng-template #elseBlock><h3>{{name}}</h3></ng-template>
-                    <p>Position: {{position}}</p>
-                    <p>Height: {{height}}</p>
-                    <p>Weight: {{weight}} lbs</p>
-                    <p>Age: {{age}}</p>
-                    <p>Hometown: {{city}}</p>
-                </div>                
-                <div class="stat-select">
-                    <select name="statSelector" id="statSelector" [(ngModel)]="statSelection" (change)="updateChart()" style="width: 150px;">
-                        <option *ngFor="let stat of statList" value="{{stat}}">{{stat.charAt(0).toUpperCase() + stat.slice(1)}}</option>
-                    </select>
-                </div>
-                <div style="width: 70%; height: 300px;">
-                    <canvas id="canvas" width="100" height="100" class="graph-view"></canvas>
-                </div>
-                <div class="stat-table">
-                    <table>
-                        <tr>
-                            <th>
-                               <h4>Season</h4>
-                            </th>
-                            <th>
-                                <h4>Games</h4>
-                            </th>
-                            <th>
-                                <h4>Goals</h4>
-                            </th>
-                            <th>
-                                <h4>Assists</h4>
-                            </th>
-                            <th>
-                                <h4>Points</h4>
-                            </th>
-                            <th>
-                                <h4>+/-</h4>
-                            </th>
-                            <th>
-                                <h4>PlM</h4>
-                            </th>
-                            <th>
-                                <h4>PPG</h4>
-                            </th>
-                            <th>
-                                <h4>PPP</h4>
-                            </th>
-                            <th>
-                                <h4>SHG</h4>
-                            </th>
-                            <th>
-                                <h4>SHP</h4>
-                            </th>
-                            <th>
-                                <h4>GWG</h4>
-                            </th>
-                            <th>
-                                <h4>OTG</h4>
-                            </th>
-                            <th>
-                                <h4>Shots</h4>
-                            </th>
-                            <th>
-                                <h4>Shot%</h4>
-                            </th>
-                            <th>
-                                <h4>FO%</h4>
-                            </th>
-                            <th>
-                                <h4>ToI</h4>
-                            </th>
-                            <th>
-                                <h4>ToIPG</h4>
-                            </th>
-                        </tr>
-                        <tr>
+
+        <div class="data-view">
+        <mat-card style="background-color: white; color: black; height: 420px;">
+            <div class="mini-card">
+                <h2>Player Statistics</h2>
+                <h3 *ngIf="number!=null else elseBlock">{{number}} {{name}}</h3>
+                <ng-template #elseBlock><h3>{{name}}</h3></ng-template>
+                <p>Position: {{position}}</p>
+                <p>Height: {{height}}</p>
+                <p>Weight: {{weight}} lbs</p>
+                <p>Age: {{age}}</p>
+                <p>Hometown: {{city}}</p>
+            </div>
+            <div class="mini-card" id="comparedPlayerBio" style="margin-left: 10px; visibility: hidden;">
+                <h2>Player 2 Statistics</h2>
+                <h3 *ngIf="number!=null else elseBlock">{{number2}} {{name2}}</h3>
+                <ng-template #elseBlock><h3>{{name2}}</h3></ng-template>
+                <p>Position: {{position2}}</p>
+                <p>Height: {{height2}}</p>
+                <p>Weight: {{weight2}} lbs</p>
+                <p>Age: {{age2}}</p>
+                <p>Hometown: {{city2}}</p>
+            </div>                       
+            <div class="stat-select">
+                <select name="statSelector" id="statSelector" [(ngModel)]="statSelection" (change)="updateChart()" style="width: 150px;">
+                    <option *ngFor="let stat of statList" value="{{stat}}">{{stat.charAt(0).toUpperCase() + stat.slice(1)}}</option>
+                </select>
+            </div>
+            <div>
+                <button mat-raised-button class="reset-button" (click)="clearStatView()">Reset</button>
+            </div>
+            <div style="width: 70%; height: 300px;">
+                <canvas id="canvas" width="100" height="100" class="graph-view"></canvas>
+            </div>
+            <div class="stat-table">
+                <table>
+                    <tr>
+                        <th>
+                            <h4>Season</h4>
+                        </th>
+                        <th>
+                            <h4>Games</h4>
+                        </th>
+                        <th>
+                            <h4>Goals</h4>
+                        </th>
+                        <th>
+                            <h4>Assists</h4>
+                        </th>
+                        <th>
+                            <h4>Points</h4>
+                        </th>
+                        <th>
+                            <h4>+/-</h4>
+                        </th>
+                        <th>
+                            <h4>PlM</h4>
+                        </th>
+                        <th>
+                            <h4>PPG</h4>
+                        </th>
+                        <th>
+                            <h4>PPP</h4>
+                        </th>
+                        <th>
+                            <h4>SHG</h4>
+                        </th>
+                        <th>
+                            <h4>SHP</h4>
+                        </th>
+                        <th>
+                            <h4>GWG</h4>
+                        </th>
+                        <th>
+                            <h4>OTG</h4>
+                        </th>
+                        <th>
+                            <h4>Shots</h4>
+                        </th>
+                        <th>
+                            <h4>Shot%</h4>
+                        </th>
+                        <th>
+                            <h4>FO%</h4>
+                        </th>
+                        <th>
+                            <h4>ToI</h4>
+                        </th>
+                        <th>
+                            <h4>ToIPG</h4>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h4>{{season}}</h4>
+                            </td>
                             <td>
-                                <h4>{{season}}</h4>
-                             </td>
-                             <td>
-                                 <h4>{{games}}</h4>
-                              </td>
-                              <td>
-                                 <h4>{{goals}}</h4>
-                              </td>
-                              <td>
-                                 <h4>{{assists}}</h4>
-                              </td>
-                              <td>
-                                 <h4>{{points}}</h4>
-                              </td>
-                              <td>
-                                 <h4>{{plusMinus}}</h4>
-                              </td>
-                              <td>
-                                <h4>{{penaltyMinutes}}</h4>
-                             </td>
-                             <td>
-                                <h4>{{powerPlayGoals}}</h4>
-                             </td>
-                             <td>
-                                <h4>{{powerPlayPoints}}</h4>
-                             </td>
-                             <td>
-                                <h4>{{shortHandedGoals}}</h4>
-                             </td>
-                             <td>
-                                <h4>{{shortHandedPoints}}</h4>
-                             </td>
-                             <td>
-                                <h4>{{gameWinningGoals}}</h4>
-                             </td>
-                             <td>
-                                <h4>{{overTimeGoals}}</h4>
-                             </td>
-                             <td>
-                                <h4>{{shots}}</h4>
-                             </td>
-                             <td>
-                                <h4>{{shotPct}}</h4>
-                             </td>
-                             <td>
-                                <h4>{{faceOffPct}}</h4>
-                             </td>
-                             <td>
-                                <h4>{{totalTimeOnIce}}</h4>
-                             </td>
-                             <td>
-                                <h4>{{faceOffPct}}</h4>
-                             </td>
+                                <h4>{{games}}</h4>
+                            </td>
+                            <td>
+                                <h4>{{goals}}</h4>
+                            </td>
+                            <td>
+                                <h4>{{assists}}</h4>
+                            </td>
+                            <td>
+                                <h4>{{points}}</h4>
+                            </td>
+                            <td>
+                                <h4>{{plusMinus}}</h4>
+                            </td>
+                            <td>
+                            <h4>{{penaltyMinutes}}</h4>
+                            </td>
+                            <td>
+                            <h4>{{powerPlayGoals}}</h4>
+                            </td>
+                            <td>
+                            <h4>{{powerPlayPoints}}</h4>
+                            </td>
+                            <td>
+                            <h4>{{shortHandedGoals}}</h4>
+                            </td>
+                            <td>
+                            <h4>{{shortHandedPoints}}</h4>
+                            </td>
+                            <td>
+                            <h4>{{gameWinningGoals}}</h4>
+                            </td>
+                            <td>
+                            <h4>{{overTimeGoals}}</h4>
+                            </td>
+                            <td>
+                            <h4>{{shots}}</h4>
+                            </td>
+                            <td>
+                            <h4>{{shotPct}}</h4>
+                            </td>
+                            <td>
+                            <h4>{{faceOffPct}}</h4>
+                            </td>
+                            <td>
+                            <h4>{{totalTimeOnIce}}</h4>
+                            </td>
+                            <td>
+                            <h4>{{faceOffPct}}</h4>
+                            </td>
 
-                        </tr>
-                    </table>
-                </div>
+                    </tr>
+                </table>
+            </div>
 
-            </mat-card>
-           </div>
+        </mat-card>
+        </div>
     </body>
 
 </html>

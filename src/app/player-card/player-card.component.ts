@@ -12,12 +12,14 @@ export class PlayerCardComponent implements OnInit {
   player: any;
   playersData: any;
   playerStatsByYear: any;
+  comparedPlayerStatsByYear: any;
   dataChart: any;
   dataCanvas: any;
   chosenStat:number[]=[];
+  comparedChosenStat:number[]=[];
   statYears:string[]=[];
   statList: any;
-  statSelection:string = 'points';
+  statSelection:string = 'Select a Player';
 
   teams: any;
 
@@ -33,6 +35,14 @@ export class PlayerCardComponent implements OnInit {
   height: any;
   weight: any;
   city: any;
+
+  name2:any;
+  position2:any;
+  age2:any;
+  height2:any;
+  weight2:any;
+  city2:any;
+  number2:any;
 
   assists: any;
   blockedShots: any;
@@ -100,8 +110,7 @@ export class PlayerCardComponent implements OnInit {
       this.playersData = this.playersData.data;
       this.updateStats(this.playersData[0].id);
     });
-    this.clearSelection();
-    this.clearStats();
+    this.clearStatView();
     this.season='';
   }
 
@@ -186,6 +195,39 @@ export class PlayerCardComponent implements OnInit {
     );
   }
 
+  comparePlayer(playerId: number): void{
+    document.getElementById("comparedPlayerBio")!.style.visibility = 'visible';
+    console.log(playerId);
+    this.playersApi.getPlayer(playerId).subscribe(res =>{
+      this.player = res;
+    },
+    (err) => console.error(err),
+    ()=>{
+      //Collect basuc player bio data for lower display
+      this.name2 = this.player.fullName;
+      this.position2 = this.player.primaryPosition.name;
+      this.age2 = this.player.currentAge;
+      this.height2 = this.player.height;
+      this.weight2 = this.player.weight;
+      this.city2 = this.player.birthCity;
+      this.number2= this.player.primaryNumber;
+      this.number2 = this.number2;
+      this.number2 = '#' +this.number2;
+    });
+    
+    this.playersApi.getPlayerStatsByYear(playerId).subscribe(res=>{
+      this.comparedPlayerStatsByYear = res;
+    },
+    (err)=> console.error(err),
+    ()=>{
+      this.comparedPlayerStatsByYear = this.comparedPlayerStatsByYear[0].splits
+      // this.statList = Object.keys(this.playerStatsByYear[0].stat);
+      this.updateChart();
+    });
+
+    
+  }
+
    //Clears all data in stat table
   clearStats():void{
     this.games=null;
@@ -213,16 +255,46 @@ export class PlayerCardComponent implements OnInit {
     this.overTimeGoals=null;
   }
 
-  //Clear selected player data
+  //Clear selected player(s) data
   clearSelection():void{
+    this.number=null;
     this.name='';
     this.position='';
+    this.height='';
+    this.weight='';
     this.age=null;
-    this.number=null;
+    this.city='';
+
+    this.number2=null;
+    this.name2='';
+    this.position2='';
+    this.height2='';
+    this.weight2='';
+    this.age2=null;
+    this.city2='';
+
+    document.getElementById("comparedPlayerBio")!.style.visibility = 'hidden';
+    
+  }
+
+  clearChart():void{
+    this.dataChart.data.datasets[0].label="Select a Player";
+    this.dataChart.data.datasets[0].data=null;
+    this.dataChart.data.datasets[1].label="Select a Player";
+    this.dataChart.data.datasets[1].data=null;
+    this.dataChart.data.labels=null;
+    this.dataChart.update();
+  }
+
+  clearStatView():void{
+    this.clearSelection();
+    this.clearStats();
+    this.clearChart();
   }
 
   updateChart(){
     this.chosenStat=[];
+    this.comparedChosenStat=[];
     this.statYears=[];
     var tempYear='';
     var tempIndex=0;
@@ -238,8 +310,24 @@ export class PlayerCardComponent implements OnInit {
       }
 
     }
+    tempYear='';
+    tempIndex=0;
+    for(var i=0;i<this.comparedPlayerStatsByYear.length;i++){
+      if(tempYear==this.comparedPlayerStatsByYear[i].season){
+        this.comparedChosenStat[tempIndex]= this.comparedChosenStat[tempIndex]+this.comparedPlayerStatsByYear[i].stat[this.statSelection];
+      }
+      else{
+        // this.statYears.push(this.comparedPlayerStatsByYear[i].season.slice(0,4) + '-' + this.comparedPlayerStatsByYear[i].season.slice(4));
+        this.comparedChosenStat.push(this.comparedPlayerStatsByYear[i].stat[this.statSelection])
+        tempYear=this.comparedPlayerStatsByYear[i].season;
+        tempIndex=i;
+      }
+
+    }
     this.dataChart.data.datasets[0].label=this.statSelection.charAt(0).toUpperCase() + this.statSelection.slice(1);
     this.dataChart.data.datasets[0].data=this.chosenStat;
+    this.dataChart.data.datasets[1].label=this.statSelection.charAt(0).toUpperCase() + this.statSelection.slice(1);
+    this.dataChart.data.datasets[1].data=this.comparedChosenStat;
     this.dataChart.data.labels=this.statYears;
     this.dataChart.update();
   }
@@ -260,7 +348,18 @@ export class PlayerCardComponent implements OnInit {
                   'rgba(54, 162, 235, 1)'
               ],
               borderWidth: 1
-          }]
+          },
+          {
+            label: this.statSelection,
+            data: this.comparedChosenStat,
+            backgroundColor: [
+                'rgba(54, 162, 235, 0.2)'
+            ],
+            borderColor: [
+                'rgba(54, 162, 235, 1)'
+            ],
+            borderWidth: 1
+        }]
       },
       options: {
         responsive: true,
