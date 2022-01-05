@@ -3,7 +3,6 @@ footer{
     text-align: center;
     font-size: smaller;
     background-color: gray;
-    position: absolute;
-    bottom: 0;
     width: 100%;
+
 }

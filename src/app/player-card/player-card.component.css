@@ -1,16 +1,8 @@
-html{
+body{
     background-color: gray;
-    /* height: auto; */
-    position:fixed;
-    top:0;
-    left:0;
-    right:0;
-    height: 96%;
+    height:fit-content;
+    overflow: hidden;   
 }
-/* body{
-    background-color: gray;
-    height:auto;
-} */
 th{
     border:1px solid black;
     width: 100px;
@@ -29,7 +21,7 @@ mat-option{
     background-color: white;
 }
 mat-toolbar{
-    height: 10%;
+    height: 12%;
     background-color: black;
     position: relative;
 }
@@ -115,7 +107,7 @@ mat-toolbar{
     position: absolute;
     right: 10px;
     top: 50px;
-    width: 150px;
+    width: 6%;
     border-radius: 5px;
     background-color: gray;
 }
