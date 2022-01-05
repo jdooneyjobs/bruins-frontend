@@ -14,6 +14,7 @@ import {MatListModule} from '@angular/material/list';
 import {MatButtonModule} from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 import { FooterComponent } from './footer/footer.component';
+import {MatTabsModule} from '@angular/material/tabs';
 
 
 @NgModule({
@@ -33,7 +34,8 @@ import { FooterComponent } from './footer/footer.component';
     MatSelectModule,
     MatListModule,
     MatButtonModule,
-    FormsModule
+    FormsModule,
+    MatTabsModule
   ],
   providers: [PlayersApiService],
   bootstrap: [AppComponent]
