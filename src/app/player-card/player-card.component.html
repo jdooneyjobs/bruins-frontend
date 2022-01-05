@@ -39,10 +39,13 @@
                             </mat-list>
                         </div>
                         <div style="width: 250px;display: inline-block;">
-                            <button mat-raised-button class="stat-button" (click)="updateStats(player.id)">Show All Stats</button>
+                            <button mat-raised-button class="stat-button" (click)="updateStats(player.id)" *ngIf="player.prName != name2 else statButtonElse">Show All Stats</button>
+                            <ng-template #statButtonElse><button mat-raised-button class="disabled-stat-button">Show All Stats</button></ng-template>
                         </div>
                         <div style="width: 250px;display: inline-block;">
-                            <button mat-raised-button class="stat-button" (click)="comparePlayer(player.id)">+ Compare Player</button>
+                            <script>console.log(compareGate)</script>
+                            <button mat-raised-button class="stat-button" (click)="comparePlayer(player.id)" *ngIf="compareGate==true && player.prName != name else compareButtonElse">+ Compare Player</button>
+                            <ng-template #compareButtonElse><button mat-raised-button class="disabled-stat-button">+ Compare Player</button></ng-template>
                         </div>
                        
                     </div>
@@ -56,8 +59,8 @@
         <mat-card style="background-color: white; color: black; height: 420px;">
             <div class="mini-card">
                 <h2>Player Statistics</h2>
-                <h3 *ngIf="number!=null else elseBlock">{{number}} {{name}}</h3>
-                <ng-template #elseBlock><h3>{{name}}</h3></ng-template>
+                <h3 *ngIf="number!='#undefined' else elseName">{{number}} {{name}}</h3>
+                <ng-template #elseName><h3>{{name}}</h3></ng-template>
                 <p>Position: {{position}}</p>
                 <p>Height: {{height}}</p>
                 <p>Weight: {{weight}} lbs</p>
@@ -66,7 +69,7 @@
             </div>
             <div class="mini-card" id="comparedPlayerBio" style="margin-left: 10px; visibility: hidden;">
                 <h2>Player 2 Statistics</h2>
-                <h3 *ngIf="number!=null else elseBlock">{{number2}} {{name2}}</h3>
+                <h3 *ngIf="number2!='#undefined' else elseBlock">{{number2}} {{name2}}</h3>
                 <ng-template #elseBlock><h3>{{name2}}</h3></ng-template>
                 <p>Position: {{position2}}</p>
                 <p>Height: {{height2}}</p>
@@ -75,7 +78,7 @@
                 <p>Hometown: {{city2}}</p>
             </div>                       
             <div class="stat-select">
-                <select name="statSelector" id="statSelector" [(ngModel)]="statSelection" (change)="updateChart()" style="width: 150px;">
+                <select name="statSelector" id="statSelector" [(ngModel)]="statSelection" (change)="updateChartCompare()" style="width: 150px;">
                     <option *ngFor="let stat of statList" value="{{stat}}">{{stat.charAt(0).toUpperCase() + stat.slice(1)}}</option>
                 </select>
             </div>

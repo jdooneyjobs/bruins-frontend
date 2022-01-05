@@ -43,6 +43,14 @@ mat-toolbar{
 .stat-button:hover{
     background-color: rgb(73, 73, 73);
 }
+.disabled-stat-button{
+    justify-content: center;
+    background-color: rgb(73, 73, 73);
+    color: gray;
+}
+.disabled-stat-button:hover{
+    cursor:default;
+}
 .player-card{
     text-align: center;
     width: 500px;
