@@ -39,14 +39,6 @@ export class PlayerCardComponent implements OnInit {
   weight: any;
   city: any;
 
-  name2:any;
-  position2:any;
-  age2:any;
-  height2:any;
-  weight2:any;
-  city2:any;
-  number2:any;
-
   assists: any;
   blockedShots: any;
   games:any;
@@ -72,6 +64,15 @@ export class PlayerCardComponent implements OnInit {
   powerPlayTimeOnIcePerGame:any;
   shortHandedTimeOnIce:any;
   shortHandedTimeOnIcePerGame:any;
+
+  //Second (compared) player bio
+  name2:any;
+  position2:any;
+  age2:any;
+  height2:any;
+  weight2:any;
+  city2:any;
+  number2:any;
 
 
 
@@ -193,14 +194,11 @@ export class PlayerCardComponent implements OnInit {
         this.compareGate = true;
         this.compareClicked = false;
       });
-
-
-        
-      
     }
     );
   }
 
+  //Runs when + Compare Player button is pressed, collects data for new player and calls updateChart()
   comparePlayer(playerId: number): void{
     document.getElementById("comparedPlayerBio")!.style.visibility = 'visible';
     console.log(playerId);
@@ -227,10 +225,19 @@ export class PlayerCardComponent implements OnInit {
       ()=>{
         this.comparedPlayerStatsByYear = this.comparedPlayerStatsByYear[0].splits
         this.compareClicked = true;
-        this.updateChartCompare();
+        this.updateChart();
       });
     });
-    
+  }
+
+  //Clears everything in the lower data view
+  clearStatView():void{
+    this.compareGate = false;
+    this.compareClicked = false;
+    this.statList=[];
+    this.clearSelection();
+    this.clearStats();
+    this.clearChart();
   }
 
    //Clears all data in stat table
@@ -279,9 +286,9 @@ export class PlayerCardComponent implements OnInit {
     this.city2='';
 
     document.getElementById("comparedPlayerBio")!.style.visibility = 'hidden';
-    
   }
 
+  //Clears everything in the chart
   clearChart():void{
     this.dataChart.data.datasets[0].label="Select a Player";
     this.chosenStat = [];
@@ -293,41 +300,8 @@ export class PlayerCardComponent implements OnInit {
     this.dataChart.update();
   }
 
-  clearStatView():void{
-    this.compareGate = false;
-    this.compareClicked = false;
-    this.statList=[];
-    this.clearSelection();
-    this.clearStats();
-    this.clearChart();
-  }
-
-  updateChart(){
-    this.chosenStat=[];
-    this.comparedChosenStat=[];
-    this.statYears=[];
-    var tempYear='';
-    var tempIndex=-1;
-    for(var i=0;i<this.playerStatsByYear.length;i++){
-      if(tempYear==this.playerStatsByYear[i].season){
-        this.chosenStat[tempIndex]= this.chosenStat[tempIndex]+this.playerStatsByYear[i].stat[this.statSelection];
-      }
-      else{
-        this.statYears.push(this.playerStatsByYear[i].season.slice(0,4) + '-' + this.playerStatsByYear[i].season.slice(4));
-        this.chosenStat.push(this.playerStatsByYear[i].stat[this.statSelection])
-        tempIndex++;
-        tempYear=this.playerStatsByYear[i].season;
-      }
-
-    }
-
-    this.dataChart.data.datasets[0].label= this.name + " " +this.statSelection.charAt(0).toUpperCase() + this.statSelection.slice(1);
-    this.dataChart.data.datasets[0].data=this.chosenStat;
-    this.dataChart.data.labels=this.statYears;
-    this.dataChart.update();
-  }
-
-  updateChartCompare():void{
+  //Updates chart data for one or both players
+  updateChart():void{
     this.chosenStat=[];
     this.comparedChosenStat=[];
     this.statYears=[];
@@ -396,6 +370,7 @@ export class PlayerCardComponent implements OnInit {
     this.dataChart.update();
   }
 
+  //Initializes data chart
   initializeChart(): void{
     
     this.dataChart = new Chart(this.dataCanvas, {
