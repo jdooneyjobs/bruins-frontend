@@ -19,30 +19,30 @@
                 <mat-card-header>
                     <h1>{{player?.prName}}</h1>
                 </mat-card-header>
-                <div style="display:flex; justify-content: center;">
+                <div class="display:flex; justify-content: center;">
                     <picture>
                         <img src="../../assets/player_stock_photo.jpg" alt="" />
                     </picture>
                 </div>
                 <div>
-                    <div style="width: 250px;display: inline-block;">
+                    <div class="playercard-datablock">
                         <mat-list>
                             <mat-list-item *ngIf="player.sweaterNumber!=null else elseBlock" class="text">Number: {{player.sweaterNumber}}</mat-list-item>
                             <ng-template #elseBlock><mat-list-item class="text">Number: N/A</mat-list-item></ng-template>
                             <mat-list-item class="text">Position: {{player.position}}</mat-list-item>
                         </mat-list>
                     </div>
-                    <div style="width: 250px;display: inline-block;">
+                    <div class="playercard-datablock">
                         <mat-list>
                             <mat-list-item class="text">Height: {{player.height}} inches</mat-list-item>
                             <mat-list-item class="text">Weight: {{player.weight}} lbs</mat-list-item>
                         </mat-list>
                     </div>
-                    <div style="width: 250px;display: inline-block;">
+                    <div class="playercard-datablock">
                         <button mat-raised-button class="stat-button" (click)="updateStats(player.id)" *ngIf="player.prName != name2 else statButtonElse">Show All Stats</button>
                         <ng-template #statButtonElse><button mat-raised-button class="disabled-stat-button">Show All Stats</button></ng-template>
                     </div>
-                    <div style="width: 250px;display: inline-block;">
+                    <div class="playercard-datablock">
                         <script>console.log(compareGate)</script>
                         <button mat-raised-button class="stat-button" (click)="comparePlayer(player.id)" *ngIf="compareGate==true && player.prName != name else compareButtonElse">+ Compare Player</button>
                         <ng-template #compareButtonElse><button mat-raised-button class="disabled-stat-button">+ Compare Player</button></ng-template>
@@ -78,7 +78,7 @@
             <p>Hometown: {{city2}}</p>
         </div>                       
         <div class="stat-select">
-            <select name="statSelector" id="statSelector" [(ngModel)]="statSelection" (change)="updateChartCompare()" style="width: 150px;">
+            <select name="statSelector" id="statSelector" [(ngModel)]="statSelection" (change)="updateChart()" style="width: 150px;">
                 <option *ngFor="let stat of statList" value="{{stat}}">{{stat.charAt(0).toUpperCase() + stat.slice(1)}}</option>
             </select>
         </div>
