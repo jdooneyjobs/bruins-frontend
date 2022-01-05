@@ -19,7 +19,6 @@ export class PlayerCardComponent implements OnInit {
   comparedChosenStat:number[]=[];
   statYears:string[]=[];
   statList: any;
-  statList2: any;
   statSelection:string = '';
 
   teams: any;
@@ -81,7 +80,7 @@ export class PlayerCardComponent implements OnInit {
   ngOnInit(): void {
     this.dataCanvas=document.getElementById('canvas');
     Chart.register(...registerables);
-    this.playersApi.getPlayersByTeam(55).subscribe(res =>{
+    this.playersApi.getPlayersByTeam(6).subscribe(res =>{
       this.playersData = res;
     },
     (err) => console.error(err),  
@@ -98,7 +97,7 @@ export class PlayerCardComponent implements OnInit {
     },
     (err)=>console.error(err),
     ()=>{
-
+      this.selectedTeam=this.teams[5].id;
     });    
    
   }
@@ -227,7 +226,6 @@ export class PlayerCardComponent implements OnInit {
       (err)=> console.error(err),
       ()=>{
         this.comparedPlayerStatsByYear = this.comparedPlayerStatsByYear[0].splits
-        this.statList2 = Object.keys(this.playerStatsByYear[0].stat);
         this.compareClicked = true;
         this.updateChartCompare();
       });
@@ -298,6 +296,7 @@ export class PlayerCardComponent implements OnInit {
   clearStatView():void{
     this.compareGate = false;
     this.compareClicked = false;
+    this.statList=[];
     this.clearSelection();
     this.clearStats();
     this.clearChart();
@@ -360,7 +359,7 @@ export class PlayerCardComponent implements OnInit {
       }
 
     }
-    
+
     if(this.compareGate ==true && this.compareClicked==true){
       tempYear='';
       tempIndex=-1;
