@@ -18,6 +18,7 @@ export class PlayerCardComponent implements OnInit {
   chosenStat:number[]=[];
   comparedChosenStat:number[]=[];
   statYears:string[]=[];
+  statYears2:string[]=[];
   statList: any;
   statSelection:string = '';
 
@@ -305,30 +306,36 @@ export class PlayerCardComponent implements OnInit {
     this.chosenStat=[];
     this.comparedChosenStat=[];
     this.statYears=[];
+    this.statYears2=[];
     var tempYear='';
     var tempIndex=-1;
     for(var i=0;i<this.playerStatsByYear.length;i++){
 
-      if(this.statSelection=='penaltyMinutes'){
-        if(tempYear==this.playerStatsByYear[i].season){
-          this.chosenStat[tempIndex]= this.chosenStat[tempIndex]+parseInt(this.playerStatsByYear[i].stat[this.statSelection]);
-        }
-        else{
-          this.statYears.push(this.playerStatsByYear[i].season.slice(0,4) + '-' + this.playerStatsByYear[i].season.slice(4));
-          this.chosenStat.push(parseInt(this.playerStatsByYear[i].stat[this.statSelection]))
-          tempIndex++;
-          tempYear=this.playerStatsByYear[i].season;
-        }
+      if(this.playerStatsByYear[i].stat[this.statSelection] == NaN){
+        this.chosenStat.push(0);
       }
       else{
-        if(tempYear==this.playerStatsByYear[i].season){
-          this.chosenStat[tempIndex]= this.chosenStat[tempIndex]+this.playerStatsByYear[i].stat[this.statSelection];
+        if(this.statSelection=='penaltyMinutes'){
+          if(tempYear==this.playerStatsByYear[i].season){
+            this.chosenStat[tempIndex]= this.chosenStat[tempIndex]+parseInt(this.playerStatsByYear[i].stat[this.statSelection]);
+          }
+          else{
+            this.statYears.push(this.playerStatsByYear[i].season.slice(0,4) + '-' + this.playerStatsByYear[i].season.slice(4));
+            this.chosenStat.push(parseInt(this.playerStatsByYear[i].stat[this.statSelection]))
+            tempIndex++;
+            tempYear=this.playerStatsByYear[i].season;
+          }
         }
         else{
-          this.statYears.push(this.playerStatsByYear[i].season.slice(0,4) + '-' + this.playerStatsByYear[i].season.slice(4));
-          this.chosenStat.push(this.playerStatsByYear[i].stat[this.statSelection])
-          tempIndex++;
-          tempYear=this.playerStatsByYear[i].season;
+          if(tempYear==this.playerStatsByYear[i].season){
+            this.chosenStat[tempIndex]= this.chosenStat[tempIndex]+this.playerStatsByYear[i].stat[this.statSelection];
+          }
+          else{
+            this.statYears.push(this.playerStatsByYear[i].season.slice(0,4) + '-' + this.playerStatsByYear[i].season.slice(4));
+            this.chosenStat.push(this.playerStatsByYear[i].stat[this.statSelection])
+            tempIndex++;
+            tempYear=this.playerStatsByYear[i].season;
+          }
         }
       }
 
@@ -338,30 +345,49 @@ export class PlayerCardComponent implements OnInit {
       tempYear='';
       tempIndex=-1;
       for(var i=0;i<this.comparedPlayerStatsByYear.length;i++){
-        if(this.statSelection=='penaltyMinutes'){
-          if(tempYear==this.comparedPlayerStatsByYear[i].season){
-            this.comparedChosenStat[tempIndex]= this.comparedChosenStat[tempIndex]+parseInt(this.comparedPlayerStatsByYear[i].stat[this.statSelection]);
-          }
-          else{
-            this.comparedChosenStat.push(parseInt(this.comparedPlayerStatsByYear[i].stat[this.statSelection]))
-            tempIndex++;
-            tempYear=this.comparedPlayerStatsByYear[i].season;
-          }
+        if(this.comparedPlayerStatsByYear[i].stat[this.statSelection] == NaN){
+          this.comparedChosenStat.push(0);
         }
         else{
-          if(tempYear==this.comparedPlayerStatsByYear[i].season){
-            this.comparedChosenStat[tempIndex]= this.comparedChosenStat[tempIndex]+this.comparedPlayerStatsByYear[i].stat[this.statSelection];
+          if(this.statSelection=='penaltyMinutes'){
+            if(tempYear==this.comparedPlayerStatsByYear[i].season){
+              this.comparedChosenStat[tempIndex]= this.comparedChosenStat[tempIndex]+parseInt(this.comparedPlayerStatsByYear[i].stat[this.statSelection]);
+            }
+            else{
+              this.statYears2.push(this.comparedPlayerStatsByYear[i].season.slice(0,4) + '-' + this.comparedPlayerStatsByYear[i].season.slice(4));
+              this.comparedChosenStat.push(parseInt(this.comparedPlayerStatsByYear[i].stat[this.statSelection]))
+              tempIndex++;
+              tempYear=this.comparedPlayerStatsByYear[i].season;
+            }
           }
           else{
-            this.comparedChosenStat.push(this.comparedPlayerStatsByYear[i].stat[this.statSelection])
-            tempIndex++;
-            tempYear=this.comparedPlayerStatsByYear[i].season;
+            if(tempYear==this.comparedPlayerStatsByYear[i].season){
+              this.comparedChosenStat[tempIndex]= this.comparedChosenStat[tempIndex]+this.comparedPlayerStatsByYear[i].stat[this.statSelection];
+            }
+            else{
+              this.statYears2.push(this.comparedPlayerStatsByYear[i].season.slice(0,4) + '-' + this.comparedPlayerStatsByYear[i].season.slice(4));
+              this.comparedChosenStat.push(this.comparedPlayerStatsByYear[i].stat[this.statSelection])
+              tempIndex++;
+              tempYear=this.comparedPlayerStatsByYear[i].season;
+            }
           }
         }
   
       }
       this.dataChart.data.datasets[1].label= this.name2 + " " +this.statSelection.charAt(0).toUpperCase() + this.statSelection.slice(1);
-      this.dataChart.data.datasets[1].data=this.comparedChosenStat;
+
+      var sortedComparedChosenStat = [];
+      for(var i=0; i<this.statYears.length;i++){
+        for(var j=0;j<this.statYears2.length;j++){
+          if(this.statYears[i]==this.statYears2[j]){
+            sortedComparedChosenStat.push(this.comparedChosenStat[j]);
+            break;
+          } 
+        }
+      }
+
+
+      this.dataChart.data.datasets[1].data=sortedComparedChosenStat;
     }
 
     this.dataChart.data.datasets[0].label= this.name + " " +this.statSelection.charAt(0).toUpperCase() + this.statSelection.slice(1);
